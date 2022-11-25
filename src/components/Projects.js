@@ -574,9 +574,15 @@ const Projects = (props) => {
 					</DataBox>
 					<DataBox screenSize={width} id={'actions'}>
 						<Live>
-							<LiveBtn>
-								<LiveText fill={Theme.background} />
-							</LiveBtn>
+							<a
+								href={projectsData[project].siteLink}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<LiveBtn>
+									<LiveText fill={Theme.background} />
+								</LiveBtn>
+							</a>
 							{width > 800 ? <LiveHandle></LiveHandle> : ''}
 						</Live>
 						{width > 800 ? (
@@ -607,10 +613,15 @@ const Projects = (props) => {
 						)}
 						<Code>
 							{width > 800 ? <CodeHandle></CodeHandle> : ''}
-							<CodeBtn>
-								{' '}
-								<CodeText fill={Theme.background} />
-							</CodeBtn>
+							<a
+								href={projectsData[project].codeLink}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<CodeBtn href>
+									<CodeText fill={Theme.background} />
+								</CodeBtn>
+							</a>
 						</Code>
 					</DataBox>
 				</ProjectDataWrapper>
