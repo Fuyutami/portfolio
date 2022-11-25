@@ -235,13 +235,13 @@ const Coded = styled(TextCoded)`
 	padding: 1rem;
 	height: 100%;
 	background-color: ${Theme.inactiveSkill};
-	opacity: ${(props) => (props.active ? 1 : 0.4)};
+	opacity: ${(props) => (props.selected ? 1 : 0.4)};
 `
 const Designed = styled(TextDesigned)`
 	padding: 1rem;
 	height: 100%;
 	background-color: ${Theme.inactiveSkill};
-	opacity: ${(props) => (props.active ? 1 : 0.4)};
+	opacity: ${(props) => (props.selected ? 1 : 0.4)};
 `
 //extra
 const Extra = styled.div`
@@ -290,6 +290,7 @@ const ExtraDeskription = styled.img`
 //live btn
 const Live = styled.div`
 	width: 100%;
+	margin-bottom: 1rem;
 `
 const LiveBtn = styled.button`
 	border: none;
@@ -302,7 +303,6 @@ const LiveBtn = styled.button`
 	align-items: center;
 	justify-content: center;
 	position: relative;
-	margin-bottom: 1rem;
 
 	&::after {
 		content: '';
@@ -335,9 +335,8 @@ const LiveText = styled(TextViewLiveSite)`
 	height: 10px;
 `
 const LiveHandle = styled.div`
-	/* background-color: ${Theme.text}; */
 	width: 100%;
-	height: 2px;
+
 	position: relative;
 
 	&::after {
@@ -547,11 +546,11 @@ const Projects = (props) => {
 							{width > 800 ? (
 								<CodedDesigned>
 									<Designed
-										active={projectsData[project].designed}
+										selected={projectsData[project].designed}
 										fill={Theme.text}
 									/>
 									<Coded
-										active={projectsData[project].coded}
+										selected={projectsData[project].coded}
 										fill={Theme.text}
 									/>
 								</CodedDesigned>
@@ -576,7 +575,6 @@ const Projects = (props) => {
 					<DataBox screenSize={width} id={'actions'}>
 						<Live>
 							<LiveBtn>
-								{' '}
 								<LiveText fill={Theme.background} />
 							</LiveBtn>
 							{width > 800 ? <LiveHandle></LiveHandle> : ''}

@@ -4,7 +4,7 @@ const projectsData = [
 		title: 'images/easybank.svg',
 		description:
 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
-		imageURL: 'images/easyBankImg.png',
+		imageURL: 'images/imageEasybank.png',
 		coded: true,
 		designed: false,
 		tech: 'images/techForEasybank.svg',
@@ -13,16 +13,16 @@ const projectsData = [
 		queries: 4,
 	},
 	{
-		name: 'other project',
-		title: 'images/easybank.svg',
+		name: 'natours',
+		title: 'images/natours.svg',
 		description:
 			'Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
-		imageURL: 'images/easyBankImg.png',
+		imageURL: 'images/imageNatours.png',
 		coded: true,
-		designed: true,
-		tech: 'images/techForEasybank.svg',
+		designed: false,
+		tech: 'images/techForNatours.svg',
 		lines: 1264,
-		files: 8,
+		files: 16,
 		queries: 0,
 	},
 ]
