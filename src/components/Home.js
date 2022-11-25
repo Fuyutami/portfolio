@@ -80,7 +80,7 @@ const LastNameWrap = styled.div`
 
 const Home = (props) => {
 	const [width, height] = useWindowSize()
-	const unit = (width * 0.5) / 6.95
+	const unit = (width * 0.5) / (width > 900 ? 6.95 : 5.5)
 	const blurSamples = 15
 	const initialDelay = props.firstLoad ? 2.5 : 0
 

@@ -85,7 +85,7 @@ const Content = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	justify-content: space-around;
+	justify-content: space-between;
 	height: 100%;
 	width: 80%;
 `
@@ -95,7 +95,8 @@ const TitleWrapper = styled.div`
 	height: 32%;
 	padding: 1rem;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	justify-content: flex-end;
 	animation: ${({ state }) => {
 			switch (state) {
 				case 'entering':

@@ -87,6 +87,8 @@ const AnnotationContainer = styled.div`
 `
 
 const Skills = (props) => {
+	const [width, height] = useWindowSize()
+	const [size, setSize] = useState(180)
 	const [side, setSide] = useState('left')
 	const [skill, setSkill] = useState(undefined)
 	const [annotation, setAnnotation] = useState({
@@ -98,7 +100,10 @@ const Skills = (props) => {
 	const carouselLeftRef = useRef()
 	const carouselRightRef = useRef()
 
-	console.log(skill)
+	useEffect(() => {
+		console.log(size)
+		setSize(width / 10)
+	}, [width])
 
 	// select item in one of the carousels
 	useEffect(() => {
@@ -139,7 +144,7 @@ const Skills = (props) => {
 								<CarouselWrapper>
 									<Carousel
 										images={skills.map((skill) => skill.imageURL)}
-										width={180}
+										width={size}
 										angle={7}
 										speed={2}
 										colors={{
@@ -163,7 +168,7 @@ const Skills = (props) => {
 								<CarouselWrapper>
 									<Carousel
 										images={skills.map((skill) => skill.imageURL)}
-										width={180}
+										width={size}
 										angle={7}
 										speed={-2}
 										colors={{

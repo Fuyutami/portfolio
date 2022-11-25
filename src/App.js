@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import {
-	CSSTransition,
-	TransitionGroup,
-	Transition,
-} from 'react-transition-group'
+import { TransitionGroup, Transition } from 'react-transition-group'
 
 import './App.css'
 import UI from './components/ui/UI'
@@ -19,7 +15,7 @@ function App() {
 
 	return (
 		<>
-			<UI setFirstLoad={setFirstLoad} />
+			<UI firstLoad={firstLoad} setFirstLoad={setFirstLoad} />
 			<TransitionGroup component={null}>
 				<Transition
 					key={location.key}

@@ -58,7 +58,7 @@ const Squares = styled(GraphicsSquares)`
 	animation: ${squaresAppear} 0.5s 1.5s ease-out forwards;
 `
 
-const Frame = () => {
+const Frame = (props) => {
 	const [width, height] = useWindowSize()
 	const points = []
 	const diagonal1 = Math.sqrt(Math.pow(25, 2) / 2)
@@ -112,7 +112,7 @@ const Frame = () => {
 				</Line>
 				<LeftBar />
 				<RightBar stretchSpace={stretchSpace} />
-				<BottomBar />
+				<BottomBar firstLoad={props.firstLoad} />
 				<Logo />
 			</Container>
 		</>

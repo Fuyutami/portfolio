@@ -8,7 +8,7 @@ const UI = (props) => {
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			props.setFirstLoad(false)
-		}, 2000)
+		}, 4000)
 		return () => {
 			clearTimeout(timeout)
 		}
@@ -16,9 +16,9 @@ const UI = (props) => {
 
 	return (
 		<>
-			<Navbar />
+			<Navbar backToHome={props.backToHome} />
 			<SocialLinks />
-			<Frame />
+			<Frame firstLoad={props.firstLoad} />
 		</>
 	)
 }

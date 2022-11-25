@@ -18,7 +18,7 @@ const Carousel = forwardRef((props, ref) => {
 	const requestIdRef = useRef(null)
 	const stateRef = useRef({
 		size: {
-			width: props.width || 200,
+			width: props.width || 180,
 			height: undefined,
 		},
 		angle: props.angle || 0,

@@ -1,5 +1,6 @@
 import React, { useReducer, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { Transition, TransitionGroup } from 'react-transition-group'
 import styled, { keyframes } from 'styled-components'
 
@@ -158,7 +159,7 @@ const initialiseState = () => {
 	return state
 }
 
-const initialState = initialiseState()
+let initialState = initialiseState()
 
 const reducer = (state, { event, el }) => {
 	if (event === 'click')
@@ -172,11 +173,22 @@ const reducer = (state, { event, el }) => {
 			...state,
 			hover: el,
 		}
+	if (event === 'set') {
+		return {
+			...initialState,
+		}
+	}
 }
 
 //Component
 const Navbar = () => {
 	const [state, dispatch] = useReducer(reducer, initialState)
+	const location = useLocation()
+
+	useEffect(() => {
+		initialState = initialiseState()
+		dispatch({ event: 'set', el: null })
+	}, [location])
 
 	return (
 		<>

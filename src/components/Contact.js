@@ -1,19 +1,22 @@
-import React, { useRef, useState } from 'react'
-import styled, { keyframes } from 'styled-components'
+import React, { useState } from 'react'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+
 import { blinkEnter1, blinkExit } from '../other/animations'
 import Theme from '../other/Theme'
 
 import {
-	GraphicsFieldSmall,
 	TextName,
 	TextHi,
 	TextMail,
 	TextMessage,
-	GraphicsFieldLarge,
 	TextSend,
+	Thankyou,
 } from '../other/Vectors'
 
 const Container = styled.div`
+	padding: 2rem;
 	position: absolute;
 	z-index: -100;
 	width: 100%;
@@ -48,47 +51,50 @@ const Container = styled.div`
 		}
 	}};
 `
-
 const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-`
+	align-items: flex-start;
 
+	width: 60%;
+	max-width: 500px;
+`
 const Form = styled.form`
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 `
-
+const TextWrapper = styled.div`
+	margin-bottom: 3rem;
+`
 const Text = styled(TextHi)`
-	margin-bottom: 5rem;
+	max-width: 300px;
 	backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
 	& > path {
 		fill: ${Theme.text};
 	}
 `
-
 const FieldS = styled.div`
 	position: relative;
-	width: 319px;
+	width: 100%;
 	height: 33px;
-	padding: 0.5rem;
 	margin-top: 0.5rem;
 	margin-bottom: 2rem;
 `
-const FieldBorderS = styled(GraphicsFieldSmall)`
-	position: absolute;
-	transform: translate(-0.5rem, -0.5rem);
-`
 const InputS = styled.input`
-	border: none;
-	background-color: ${Theme.background};
+	border: 1px solid;
+	border-color: ${(props) =>
+		!props.showError ? Theme.text : !props.isValid ? Theme.error : Theme.text};
+	border-radius: 5px;
 	position: relative;
+	padding: 1.2rem 1rem;
 	width: 100%;
 	height: 100%;
 	color: ${Theme.text};
 	box-shadow: 0 0 0px 1000px ${Theme.background} inset;
 	-webkit-text-fill-color: ${Theme.text};
+	font-family: 'Courier New', Courier, monospace;
 
 	&:focus {
 		outline: none;
@@ -99,33 +105,56 @@ const InputS = styled.input`
 
 const FieldL = styled.div`
 	position: relative;
-	width: 319px;
+	width: 100%;
 	height: 130px;
-	padding: 0.5rem;
 	margin-top: 0.5rem;
 	margin-bottom: 4rem;
 `
-const FieldBorderL = styled(GraphicsFieldLarge)`
-	position: absolute;
-	transform: translate(-0.5rem, -0.5rem);
-`
 const InputMsg = styled.textarea`
-	border: none;
+	border: 1px solid;
+	border-color: ${(props) =>
+		!props.showError ? Theme.text : !props.isValid ? Theme.error : Theme.text};
+	border-radius: 5px;
 	background-color: transparent;
+	padding: 1.2rem 1rem;
 	position: relative;
 	width: 100%;
 	height: 100%;
 	color: ${Theme.text};
 	resize: none;
+	font-family: 'Courier New', Courier, monospace;
 
 	&:focus {
 		outline: none;
 	}
-`
 
+	/* width */
+	::-webkit-scrollbar {
+		width: 8px;
+		border-radius: 5px;
+	}
+
+	/* Track */
+	::-webkit-scrollbar-track {
+		background: ${Theme.inactiveSkill};
+		border-radius: 5px;
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		background: ${Theme.text2};
+		border-radius: 5px;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background: ${Theme.text};
+	}
+`
 const Btn = styled.button`
 	display: flex;
-	background-color: ${Theme.text};
+	background-color: ${(props) =>
+		props.inactive ? Theme.inactiveSkill : Theme.text};
 	border: none;
 	border-radius: 10px;
 	align-self: flex-start;
@@ -134,69 +163,144 @@ const Btn = styled.button`
 `
 
 const Contact = (props) => {
+	const navigate = useNavigate()
 	const [state, setState] = useState({
 		name: '',
 		email: '',
 		message: '',
-		formErrors: { email: '', name: '', message: '' },
+		nameValid: false,
 		emailValid: false,
+		messageValid: false,
 		formValid: false,
+		submitted: false,
+		showErrors: false,
 	})
-	const nameRef = useRef(null)
-	const emailRef = useRef(null)
-	const messageRef = useRef(null)
+
+	useEffect(() => {
+		validate()
+	}, [state.name, state.email, state.message])
+
+	useEffect(() => {
+		if (state.submitted === false) return
+		const timer = setTimeout(() => {
+			navigate('/')
+		}, 2000)
+		return () => clearTimeout(timer)
+	}, [state.submitted])
+
+	const handleUserInput = (e) => {
+		const name = e.target.name
+		const value = e.target.value
+		setState((prev) => ({ ...prev, [name]: value }))
+	}
+
+	const validate = () => {
+		const nameIsValid = state.name != ''
+		const emailIsValid = /\S+@\S+\.\S+/.test(state.email.toLowerCase())
+		const messageIsValid = state.message != ''
+		const formIsValid = nameIsValid && emailIsValid && messageIsValid
+
+		setState((prev) => ({
+			...prev,
+			nameValid: nameIsValid,
+			emailValid: emailIsValid,
+			messageValid: messageIsValid,
+			formValid: formIsValid,
+		}))
+	}
 
 	const submitHandler = (e) => {
 		e.preventDefault()
-		console.log(
-			nameRef.current.value,
-			emailRef.current.value,
-			messageRef.current.value
-		)
+		if (!state.formValid) {
+			setState((prev) => ({
+				...prev,
+				showErrors: true,
+			}))
+			console.log('invalid')
+		} else {
+			console.log('your email has been sent, thank you!')
+			setState((prev) => ({
+				...prev,
+				submitted: true,
+			}))
+		}
+		console.log(state)
 	}
 
 	return (
 		<>
 			<Container state={props.state}>
 				<Wrapper>
-					<Form>
-						<Text width="390" height="33" fill={Theme.text} />
-						<label htmlFor="user_name">
-							<TextName width="40" height="8" fill={Theme.text} />
-						</label>
-						<FieldS>
-							<FieldBorderS width="319" height="36" fill={Theme.text} />
-							<InputS type="text" name="user_name" ref={nameRef} />
-						</FieldS>
-						<label htmlFor="user_email">
-							<TextMail width="43" height="8" fill={Theme.text} />
-						</label>
-						<FieldS>
-							<FieldBorderS width="319" height="36" fill={Theme.text} />
-							<InputS type="email" name="user_email" ref={emailRef} />
-						</FieldS>
-						<label htmlFor="message">
-							<TextMessage
-								width="64"
-								height="8"
-								fill={Theme.text}
-								ref={messageRef}
-							/>
-						</label>
-						<FieldL>
-							<FieldBorderL width="319" height="132" fill={Theme.text} />
-							<InputMsg name="message" />
-						</FieldL>
-						<Btn
-							type="submit"
-							// disabled={!state.formValid}
-							onClick={(e) => {
-								submitHandler(e)
-							}}
-						>
-							<TextSend width="64" height="15" fill={Theme.background} />
-						</Btn>
-					</Form>
+					{!state.submitted ? (
+						<Form>
+							<TextWrapper>
+								<Text fill={Theme.text} />
+							</TextWrapper>
+							<label htmlFor="name">
+								<TextName width="40" height="8" fill={Theme.text} />
+							</label>
+							<FieldS>
+								<InputS
+									showError={state.showErrors}
+									isValid={state.nameValid}
+									type="text"
+									name="name"
+									value={state.name}
+									onChange={(e) => {
+										handleUserInput(e)
+									}}
+								/>
+							</FieldS>
+							<label htmlFor="email">
+								<TextMail
+									width="43"
+									height="8"
+									fill={Theme.text}
+									value={state.email}
+								/>
+							</label>
+							<FieldS>
+								<InputS
+									showError={state.showErrors}
+									isValid={state.emailValid}
+									type="email"
+									name="email"
+									onChange={(e) => {
+										handleUserInput(e)
+									}}
+								/>
+							</FieldS>
+							<label htmlFor="message">
+								<TextMessage
+									width="64"
+									height="8"
+									fill={Theme.text}
+									value={state.message}
+								/>
+							</label>
+							<FieldL>
+								<InputMsg
+									showError={state.showErrors}
+									isValid={state.messageValid}
+									name="message"
+									onChange={(e) => {
+										handleUserInput(e)
+									}}
+								/>
+							</FieldL>
+							<Btn
+								type="submit"
+								inactive={!state.formValid}
+								onClick={(e) => {
+									submitHandler(e)
+								}}
+							>
+								<TextSend width="64" height="15" fill={Theme.background} />
+							</Btn>
+						</Form>
+					) : (
+						<Thankyou fill={Theme.text} />
+					)}
 				</Wrapper>
 			</Container>
 		</>
