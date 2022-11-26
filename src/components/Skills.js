@@ -101,7 +101,6 @@ const Skills = (props) => {
 	const carouselRightRef = useRef()
 
 	useEffect(() => {
-		console.log(size)
 		setSize(width / 10)
 	}, [width])
 

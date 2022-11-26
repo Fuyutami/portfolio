@@ -216,15 +216,12 @@ const Contact = (props) => {
 				...prev,
 				showErrors: true,
 			}))
-			console.log('invalid')
 		} else {
-			console.log('your email has been sent, thank you!')
 			setState((prev) => ({
 				...prev,
 				submitted: true,
 			}))
 		}
-		console.log(state)
 	}
 
 	return (
